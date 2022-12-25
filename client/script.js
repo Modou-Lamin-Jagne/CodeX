@@ -8,9 +8,11 @@ let loadInterval;
 
 // Dispaying loader
 function loader(element) {
-  element.textContent = '';
+  element.textContent = "";
+
   loadInterval = setInterval(() => {
     element.textContent += '.';
+
     if (element.textContent === '....') {
       element.textContent = '';
     }
@@ -22,7 +24,7 @@ function typeText(element, text) {
   index = 0;
   let interval = setInterval(() => {
     if (index < text.length) {
-      element.innerHTML += text.chartAt(index);
+      element.innerHTML += text.charAt(index);
       index++;
     } else {
       clearInterval(interval);
@@ -36,12 +38,12 @@ function generateUniqueId() {
   const randomNumber = Math.random();
   const hexadecimalString = randomNumber.toString(16);
 
-  return (`id - ${timestamp}-${hexadecimalString}`);
+  return `id - ${timestamp}-${hexadecimalString}`;
 }
 
 // Create a function for making chat stipes
 function chatStripe(isAi, value, uniqueId) {
-  return (`<div class = "wrapper ${isAi && 'ai'}">
+  return `<div class = "wrapper ${isAi && 'ai'}">
         <div class = "chat">
           <div class = "profile">
             <img src= "${isAi ? bot : user}"
@@ -49,10 +51,8 @@ function chatStripe(isAi, value, uniqueId) {
           </div>
           <div class="message" id= ${uniqueId}>${value}</div>
         </div>
-      </div>`
-    );
+      </div>`;
 }
-
 
 // Handling Submit
 const handleSubmit = async (e) => {
@@ -66,11 +66,37 @@ const handleSubmit = async (e) => {
 
   //Bot's chatStripe
   const uniqueId = generateUniqueId();
-  chatContainer.innerHTML += chatStripe(true, " ", uniqueId);
+  chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
   chatContainer.scrollTop = chatContainer.scrollHeight;
 
   const messageDiv = document.getElementById(uniqueId);
   loader(messageDiv);
+
+  // Fetch data from server -bot's response
+  const response = await fetch('http://localhost:5000', {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      prompt: data.get('prompt'),
+    }),
+  });
+
+  clearInterval(loadInterval);
+  messageDiv.innerHTML = '';
+
+  if (response.ok) {
+    const data = await response.json();
+    const parsedData = data.bot.trim();
+
+    typeText(messageDiv, parsedData);
+  } else {
+    const err = await response.text();
+    messageDiv.innerHTML = 'Something went wrong';
+
+    alart(err);
+  }
 };
 
 form.addEventListener('submit', handleSubmit);
