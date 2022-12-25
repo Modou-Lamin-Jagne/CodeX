@@ -39,7 +39,7 @@ body {
   scroll-behavior: smooth;
 }
 
-/* hides scrollbar */ 
+/* hides scrollbar */
 #chat_container::-webkit-scrollbar {
   display: none;
 }

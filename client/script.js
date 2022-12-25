@@ -12,7 +12,7 @@ function loader(element) {
 
   loadInterval = setInterval(() => {
     element.textContent += '.';
-
+ 
     if (element.textContent === '....') {
       element.textContent = '';
     }
@@ -21,7 +21,7 @@ function loader(element) {
 
 // Make typing interval btw letters
 function typeText(element, text) {
-  index = 0;
+  let index = 0;
   let interval = setInterval(() => {
     if (index < text.length) {
       element.innerHTML += text.charAt(index);
