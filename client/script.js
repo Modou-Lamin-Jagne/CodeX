@@ -8,11 +8,11 @@ let loadInterval;
 
 // Dispaying loader
 function loader(element) {
-  element.textContent = "";
+  element.textContent = '';
 
   loadInterval = setInterval(() => {
     element.textContent += '.';
- 
+
     if (element.textContent === '....') {
       element.textContent = '';
     }
@@ -43,7 +43,7 @@ function generateUniqueId() {
 
 // Create a function for making chat stipes
 function chatStripe(isAi, value, uniqueId) {
-  return `<div class = "wrapper ${isAi && 'ai'}">
+  return (`<div class = "wrapper ${isAi && 'ai'}">
         <div class = "chat">
           <div class = "profile">
             <img src= "${isAi ? bot : user}"
@@ -51,7 +51,7 @@ function chatStripe(isAi, value, uniqueId) {
           </div>
           <div class="message" id= ${uniqueId}>${value}</div>
         </div>
-      </div>`;
+      </div>`);
 }
 
 // Handling Submit
