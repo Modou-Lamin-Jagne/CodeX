@@ -19,8 +19,9 @@ app.use(express.json());
 
 app.get('/', async (req, res) => {
   res.status(200).send({
-    message: res, //'Hello from CodeX!',
+    message: 'Hello from CodeX!',
   });
+  console.log(res);
 });
 
 app.post('/', async (req, res) => {
